@@ -382,6 +382,13 @@ class Cache():
         if float(expires) < 0:
             raise ValueError("You must specify positive number for 'expires'.") 
         
+    def __delitem__(self, key):
+        '''
+        @summary: 
+            del self[key]
+        '''
+        del self.cache[key]
+        
     __getitem__ = get
     __setitem__ = store
     
