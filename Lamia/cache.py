@@ -14,7 +14,6 @@ from Lamia.async import AsyncPurgeFile, AsyncSaveFile, loop
 join = os.path.join
 
 __all__ = ("Cache",)
-#_valpair = collections.namedtuple('expires', 'val')
 
 class Cache():
 

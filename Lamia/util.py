@@ -18,7 +18,7 @@ def set_logger():
     global logger
     logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)s (%(threadName)-2s) %(message)s',
-                    #filename='/tmp/twister.log',
+                    #filename='/tmp/lamia.log',
                     #filemode='w'
                     )
     logger = logging.getLogger("server")
@@ -48,7 +48,7 @@ def create_expiration_date(expires=0):
         _expires = float(expires)
         expiration_date = current_time() + _expires
     except:
-        # ValueError => specify "expires" int or float
+        # ValueError => specify int or float type for "expires" 
         raise
     return expiration_date
 
@@ -65,8 +65,6 @@ def build_path(cache_dir, key):
     '''
     @summary:
         キャッシュの格納先ファイルパスを返します
-    @todo: 
-        そろそろunicode or strを気にした方がよいかも
     '''
     path = _op.join(cache_dir, key)
     return path
