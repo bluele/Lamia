@@ -257,24 +257,39 @@ class Cache():
         except:
             raise
         
-    def update_all_cache(self):
+    def clear_cache(self):
         '''
-        @warning: 
-        @summary:
-            保持しているメモリキャッシュをキャッシュファイルで更新します
-        '''
-        for key in self.cache.iterkeys():
-            self.update_cache_key(key)
-        
-    def update_cache_key(self, key):
-        '''
-        @warning: 
         @summary: 
-            指定されたキーを対応するキャッシュファイルで更新します
-        @todo: 
-            ファイルキャッシュが存在しない場合は、どうするか
+            メモリ上、現在の名前空間のキャッシュを削除します
         '''
-        self.cache[key] = self._get_cache_file(key)
+        try:
+            self._clear_cache_memory()
+            self._clear_cache_file()
+        except:
+            raise
+        
+    def _clear_cache_file(self):
+        '''
+        @summary: 
+            現在の名前空間のキャッシュファイルを削除します
+        '''
+        if not os.path.isdir(self.cache_dir):
+            raise IOError("%s is not directory." % self.cache_dir)
+        try:
+            root, _, files = os.walk(self.cache_dir).next()
+            if not len(files): raise StopIteration
+        except StopIteration:
+            #logger.debug("There are no cache-file at %s" % self.cache_dir)
+            return
+        for fpath in files:
+            os.remove(join(root, fpath))
+        
+    def _clear_cache_memory(self):
+        '''
+        @summary: 
+            メモリ上のキャッシュを削除します
+        '''
+        self.cache.clear()
         
     def cache_decorator(self, expires=None, is_store_file=False):
         '''
