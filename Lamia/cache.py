@@ -50,7 +50,7 @@ class Cache():
             self.default_encoding = default_encoding
         self._init_cache_dir(self.cache_root, namespace)
     
-    def get(self, key):
+    def fetch(self, key):
         '''
         @summary: 
             キーに対応する値を取り出します
@@ -59,13 +59,31 @@ class Cache():
         '''
         try:
             # search on memory
-            val = self._get_cache_memory(key)
+            val = self._fetch_cache_memory(key)
         except (KeyError, ExpiredError):
             # search on disk
-            val = self._get_cache_file(key)
+            val = self._fetch_cache_file(key)
+        return val
+    
+    def get(self, key, default=None):
+        '''
+        @summary: 
+            キーに対応する値を取り出します
+            メモリ上にキーが存在しない場合、ディスク上のファイルを探索
+            以上で見つからない場合、default値を返す
+        '''
+        try:
+            try:
+                # search on memory
+                val = self._fetch_cache_memory(key)
+            except (KeyError, ExpiredError):
+                # search on disk
+                val = self._fetch_cache_file(key)
+        except (KeyError, ExpiredError):
+            return default
         return val
         
-    def _get_cache_memory(self, key):
+    def _fetch_cache_memory(self, key):
         '''
         @summary:
             指定したキーでメモリ上のキャッシュからデータを取得します
@@ -76,7 +94,7 @@ class Cache():
             raise ExpiredError("ExpiredError")
         return data.val
     
-    def _get_cache_file(self, key):
+    def _fetch_cache_file(self, key):
         '''
         @summary: 
             指定したキーでファイル上からデータを取得します
@@ -389,6 +407,18 @@ class Cache():
         '''
         del self.cache[key]
         
-    __getitem__ = get
+    def __contains__(self, key):
+        '''
+        @summary: 
+            key in self.cache
+        '''
+        try:
+            self.cache[key]
+        except KeyError:
+            return False
+        else:
+            return True
+        
+    __getitem__ = fetch
     __setitem__ = store
     
