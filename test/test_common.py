@@ -4,17 +4,17 @@ from Lamia.cache import Cache
 import os
 import unittest
 
+cache_root="/tmp/lamia"
+default_expires=10
+namespace="lamia-test"
+
 class TestCacheMethod(unittest.TestCase):
-    
-    cache_root="/tmp/lamia"
-    default_expires=10
-    namespace="test"
 
     def setUp(self):
         ''' do initialization '''
-        self.cache = Cache(cache_root=self.cache_root,
-              default_expires=self.default_expires,
-              namespace=self.namespace)
+        self.cache = Cache(cache_root=cache_root,
+              default_expires=default_expires,
+              namespace=namespace)
         
     def tearDown(self):
         ''' do finalization '''
@@ -24,8 +24,8 @@ class TestCacheMethod(unittest.TestCase):
         ''' test for create cache directory '''
         self.assertEqual(self.cache.cache_dir, 
                          os.path.join(
-                            self.cache_root,
-                            self.namespace            
+                            cache_root,
+                            namespace            
                             ),
                          'error test_cache_dir'
                          )
@@ -65,10 +65,16 @@ class TestCacheMethod(unittest.TestCase):
         key = "key"
         val = "val"
         self.cache.store(key, val, is_store_file=True)
-        self.cache.change_namespace("test_change")
+        self.cache.change_namespace("lamia-test_change")
         del self.cache[key]
         self.assertNotIn(key, self.cache, 'error test_change_namespace')
+        
+def cleanUp():
+    os.removedirs(os.path.join(
+              cache_root,
+              namespace))
 
 # do unittest
 suite = unittest.TestLoader().loadTestsFromTestCase(TestCacheMethod)
 unittest.TextTestRunner(verbosity=2).run(suite)
+#cleanUp()
