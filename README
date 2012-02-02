@@ -3,6 +3,8 @@
 # LICENSE MIT
 
 Lamia is Cache Module.
+<INSTALL>
+$ python setup.py install
 
 <USAGE>
 >>> from Lamia.cache import Cache
