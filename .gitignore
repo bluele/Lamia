@@ -3,6 +3,4 @@ t/
 build/
 dist/
 lamia.egg-info
-.project
-.pydevproject
 
