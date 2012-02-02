@@ -1,2 +1,5 @@
 *.pyc
 t/
+.project
+.pydevproject
+
