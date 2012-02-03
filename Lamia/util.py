@@ -31,7 +31,6 @@ setup()
 def current_time():
     '''
     @summary:  現在時刻を返します
-    @todo: プロパティにする
     @return: float: 現在時刻
     '''
     return time.time()
@@ -99,9 +98,6 @@ def get_func_key(func, *args, **kw):
     '''
     @summary: 
         指定した関数と引数からキーを生成します
-    @todo: 
-        引数を文字列としてそのまま使用すると、"/"などが入る可能性があるので、
-        引数はハッシュ値をとるなど対策を行う
     '''
     try:
         arguments = sha1("%s%s" % (str(args), str(kw))).hexdigest()
