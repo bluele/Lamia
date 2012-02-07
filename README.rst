@@ -28,7 +28,7 @@ Usage
 	... default_expires=10, 
 	... namespace="test")
 	...
-	>>> cache.store("a_key", "value")
+	>>> cache.store("a_key", "value") # equal=>` cache["a_key"] = "value" `
 	>>> cache["a_key"]
 	"value"
 	
@@ -50,3 +50,14 @@ Usage
 	
 	# Lamia servre a method to delete the old cache from directory.
 	>>> cache.purge()
+	
+	
+	# Async mode
+	
+	>>> cache.save(is_async=True)
+	>>> cache.async_loop()
+	
+	>>> cache.purge(is_async=True)
+	>>> cache.async_loop() 
+	
+	
